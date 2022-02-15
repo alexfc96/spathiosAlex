@@ -4,13 +4,11 @@ import {useRouter} from 'next/router';
 import { Button } from '@mui/material';
 import TaskList from 'src/components/tasks/TaskList';
 import Layout from 'src/components/Layout';
-
 interface Props {
   tasks: Task[]
 }
 
 export default function IndexPage({tasks}: Props) {
-
   const router = useRouter();
 
   return (
@@ -21,7 +19,10 @@ export default function IndexPage({tasks}: Props) {
         <Button onClick={() => router.push('/tasks/new')}>Create one task</Button>
       </div>
       ) : (
-        <TaskList tasks={tasks} />
+        <div>
+          <h1>Spathios:</h1>
+          <TaskList tasks={tasks} />
+        </div>
       )}
     </Layout>
   )}

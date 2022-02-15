@@ -5,7 +5,7 @@ export default function Layout({ children }: {children: JSX.Element | JSX.Elemen
   return (
     <div>
         <Navbar />
-        <main style={{ background: '#212121' }}>
+        <main>
             <Container style={{ paddingTop: '2rem' }}>
                 {children}
             </Container>
