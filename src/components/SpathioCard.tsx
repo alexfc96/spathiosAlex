@@ -16,7 +16,7 @@ export default function SpathioCard({ task }: Props) {
 
   return (
     <Grid item xs={3}>
-      <Paper elevation={3} square onClick={() => router.push(`/tasks/view/${task.id}`)}>
+      <Paper elevation={3} square onClick={() => router.push(`/tasks/${task.id}`)}>
         <img 
           src="https://s3.eu-west-3.amazonaws.com/spathios.media.files/wp-content/uploads/2022/02/01120625/DSC_0682-scaled.jpg" 
           alt="Espacio" 
