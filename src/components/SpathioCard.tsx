@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -15,7 +16,7 @@ export default function SpathioCard({ task }: Props) {
 
   return (
     <Grid item xs={3}>
-      <Paper elevation={3} square onClick={() => router.push(`/tasks/edit/${task.id}`)}>
+      <Paper elevation={3} square onClick={() => router.push(`/tasks/view/${task.id}`)}>
         <img 
           src="https://s3.eu-west-3.amazonaws.com/spathios.media.files/wp-content/uploads/2022/02/01120625/DSC_0682-scaled.jpg" 
           alt="Espacio" 
@@ -46,3 +47,10 @@ export default function SpathioCard({ task }: Props) {
     </Grid>
   )
 }
+
+// Da problemas la configuracion que tiene next para aceptar imagenes de fuera
+{/* <Image 
+src='https://s3.eu-west-3.amazonaws.com/spathios.media.files/wp-content/uploads/2022/02/01120625/DSC_0682-scaled.jpg'
+alt='Espacio'
+className="img"
+/> */}

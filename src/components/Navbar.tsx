@@ -11,14 +11,14 @@ export default function Navbar() {
         <AppBar position="static">
             <Toolbar>
                 <Image 
-                src='https://muimui.es/wp-content/uploads/2021/01/mui-circulo-300x300.png'
-                width={30}
-                height={30}
+                src='https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/ex44bgvns9pg4hfgnejk'
+                width={110}
+                height={75}
                 alt='Logo'
                 onClick={() => router.push('/')}
                 />
                 <Button color="inherit" onClick={() => router.push('/tasks/new')}>
-                    Create new task
+                    Create new spathio
                 </Button>
             </Toolbar>
         </AppBar>

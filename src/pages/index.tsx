@@ -1,5 +1,4 @@
 import {Task} from 'src/interfaces/Task';
-import { DataGrid } from '@mui/x-data-grid';
 import {useRouter} from 'next/router';
 import { Button } from '@mui/material';
 import TaskList from 'src/components/tasks/TaskList';
@@ -15,8 +14,8 @@ export default function IndexPage({tasks}: Props) {
     <Layout>
       {tasks.length === 0 ? (
       <div>
-        <h1>No tasks yet</h1>
-        <Button onClick={() => router.push('/tasks/new')}>Create one task</Button>
+        <h1>No spathios yet</h1>
+        <Button onClick={() => router.push('/tasks/new')}>Create one spathio</Button>
       </div>
       ) : (
         <div>

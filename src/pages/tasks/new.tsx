@@ -95,7 +95,7 @@ export default function NewTaskPage() {
                 <Grid item xs={3}>
                     <Card>
                         <Typography>
-                            Create task:
+                            Create spathio:
                         </Typography>
                         <CardContent>
                             <form onSubmit={handleSubmit}>
@@ -135,7 +135,7 @@ export default function NewTaskPage() {
                                             </DialogTitle>
                                             <DialogContent>
                                                 <DialogContentText>
-                                                    Are you sure you want to delete this task?
+                                                    Are you sure you want to delete this spathio?
                                                 </DialogContentText>
                                             </DialogContent>
                                             <DialogActions>
