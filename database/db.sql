@@ -6,3 +6,38 @@ CREATE TABLE IF NOT EXISTS tareas(
 );
 
 INSERT INTO tareas (title, description) VALUES('Task1', 'Description1');
+
+-----------------
+--REALIZADO CON JSONB(PERMITE CREAR OBJETOS DENTRO DEL ARRAY Y TENER DIFERENTES TIPOS DE DATOS);
+-- AQUI SE EXPLICA: https://levelup.gitconnected.com/working-with-a-jsonb-array-of-objects-in-postgresql-d2b7e7f4db87
+CREATE TABLE IF NOT EXISTS spaces(
+    listingID SERIAL PRIMARY KEY,
+    listingName VARCHAR(100) NOT NULL,
+    pricePerHour INTEGER NOT NULL,
+    listingBusy JSONB
+);
+
+INSERT INTO spaces (listingName, pricePerHour, listingBusy) VALUES('Espacio 1', 50, '[{"startDateTime": "2022-02-15T08:00:00", "endDateTime": "2022-02-15T10:30:00", "status": "booked"}]');
+INSERT INTO spaces (listingName, pricePerHour, listingBusy) VALUES('Espacio 2', 125, '[{"startDateTime": "2022-02-18T11:00:00", "endDateTime": "2022-02-18T12:00:00", "status": "blocked"}]');
+
+
+-- https://www.guru99.com/postgresql-array-functions.html
+
+--Modelo de datos solicitado:
+-- {
+--   "listingID": 1,
+--   "listingName": "Espacio espectacular en Tokio",
+--   "pricePerHour": 125,
+--   "listingBusy": [
+--     {
+--       "startDateTime": "2022-02-15T08:00:00",
+--       "endDateTime": "2022-02-15T10:30:00",
+--       "status": "booked"
+--     },
+--     {
+--       "startDateTime": "2022-02-15T12:00:00",
+--       "endDateTime": "2022-02-15T17:00:00",
+--       "status": "blocked"
+--     }
+--   ]
+-- }
