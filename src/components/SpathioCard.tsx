@@ -4,19 +4,19 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { AccessTime } from '@mui/icons-material';
-import { Task } from 'src/interfaces/Task';
 import { useRouter } from 'next/router';
+import { Space } from 'src/interfaces/Space';
 
 interface Props{
-  task: Task[];
+  space: Space[];
 }
 
-export default function SpathioCard({ task }: Props) {
+export default function SpathioCard({ space }: Props) {
   const router = useRouter();
 
   return (
     <Grid item xs={3}>
-      <Paper elevation={3} square onClick={() => router.push(`/tasks/${task.id}`)}>
+      <Paper elevation={3} square onClick={() => router.push(`/spaces/${space.listingid}`)}>
         <img 
           src="https://s3.eu-west-3.amazonaws.com/spathios.media.files/wp-content/uploads/2022/02/01120625/DSC_0682-scaled.jpg" 
           alt="Espacio" 
@@ -24,7 +24,7 @@ export default function SpathioCard({ task }: Props) {
           />
           <Box paddingX={1}>
             <Typography variant="subtitle1" component="h2">
-              {task.title}
+              {space.listingname}
             </Typography>
             <Box
               sx={{ 
@@ -39,7 +39,7 @@ export default function SpathioCard({ task }: Props) {
             </Box>
             <Box>
               <Typography variant="h6" component="h3" marginTop={0}>
-                  From 120$
+                  From {space.priceperhour}$
               </Typography>
             </Box>
           </Box>

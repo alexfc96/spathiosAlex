@@ -1,38 +1,38 @@
-import {Task} from 'src/interfaces/Task';
 import {useRouter} from 'next/router';
 import { Button } from '@mui/material';
-import TaskList from 'src/components/tasks/TaskList';
 import Layout from 'src/components/Layout';
+import { Space } from 'src/interfaces/Space';
+import SpacesList from 'src/components/spaces/SpacesList';
 interface Props {
-  tasks: Task[]
+  spaces: Space[]
 }
 
-export default function IndexPage({tasks}: Props) {
+export default function IndexPage({spaces}: Props) {
   const router = useRouter();
 
   return (
     <Layout>
-      {tasks.length === 0 ? (
+      {spaces.length === 0 ? (
       <div>
         <h1>No spathios yet</h1>
-        <Button onClick={() => router.push('/tasks/new')}>Create one spathio</Button>
+        {/* <Button onClick={() => router.push('/spaces/new')}>Create one spathio</Button> */}
       </div>
       ) : (
         <div>
           <h1>Spathios:</h1>
-          <TaskList tasks={tasks} />
+          <SpacesList spaces={spaces} />
         </div>
       )}
     </Layout>
   )}
 
 export const getServerSideProps = async() =>{
-  const res = await fetch('http://localhost:3000/api/tasks');
-  const tasks = await res.json();
+  const res = await fetch('http://localhost:3000/api/spaces');
+  const spaces = await res.json();
 
   return { 
     props: {
-      tasks: tasks
+      spaces: spaces
     }
   }
 }

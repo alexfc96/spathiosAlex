@@ -1,8 +1,8 @@
 export interface Space {
-    listingID?: string;
-    listingName: string;
-    pricePerHour: number;
-    listingBusy?: ListingBusy;
+    listingid?: string;
+    listingname: string;
+    priceperhour: number;
+    listingbusy?: ListingBusy;
 }
 
 interface ListingBusy extends Space {

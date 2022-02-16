@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS spaces(
     pricePerHour INTEGER NOT NULL,
     listingBusy JSONB
 );
+--Tendria que haber utilizado listing_name si no queda todo en minus
 
 INSERT INTO spaces (listingName, pricePerHour, listingBusy) VALUES('Espacio 1', 50, '[{"startDateTime": "2022-02-15T08:00:00", "endDateTime": "2022-02-15T10:30:00", "status": "booked"}]');
 INSERT INTO spaces (listingName, pricePerHour, listingBusy) VALUES('Espacio 2', 125, '[{"startDateTime": "2022-02-18T11:00:00", "endDateTime": "2022-02-18T12:00:00", "status": "blocked"}]');

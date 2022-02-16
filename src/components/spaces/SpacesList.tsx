@@ -1,16 +1,16 @@
-import { Task } from "src/interfaces/Task";
 import SpathioCard from 'src/components/SpathioCard';
 import Grid from '@mui/material/Grid';
+import { Space } from 'src/interfaces/Space';
 interface Props{
-    tasks: Task[];
+    spaces: Space[];
 }
 
-function TaskList({ tasks }: Props) {
+function SpacesList({ spaces }: Props) {
     return (
         <div>
             <Grid container spacing={5}>
-                {tasks.map((task) => (
-                    <SpathioCard key={task.id} task={task}></SpathioCard>
+                {spaces.map((space) => (
+                    <SpathioCard key={space.listingid} space={space}></SpathioCard>
                     )
                 )}
             </Grid>
@@ -18,4 +18,4 @@ function TaskList({ tasks }: Props) {
     )
 }
 
-export default TaskList;
+export default SpacesList;
