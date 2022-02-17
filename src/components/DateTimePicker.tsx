@@ -14,7 +14,7 @@ export default function BasicDatePicker(props) {
     const router = useRouter();
 
     const [isAvailable, setIsAvailable] = React.useState<Boolean>(false);
-    const [isNotAvailable, setIsNotAvailable] = React.useState<Boolean>(false);
+    const [isBooked, setIsBooked] = React.useState<Boolean>(false);
     const [price, setPrice] = React.useState<number>(0);
     const [dayHour, setDayHour] = React.useState<Date | null>(null);
     const [lastHour, setLastHour] = React.useState<Date | null>(null);
@@ -56,22 +56,19 @@ export default function BasicDatePicker(props) {
         if(dayHour && lastHour){
             const countHoursOfBooking = lastHour.getHours() - dayHour.getHours();
             if(countHoursOfBooking > 1){
-                const initalHourToBook = dayHour.toISOString();
-                const lastHourToBook = lastHour.toISOString();
-
-                space.listingbusy.map((booking) => {
-                    if(initalHourToBook <= booking.startDateTime && initalHourToBook >= booking.endDateTime || lastHourToBook <= booking.startDateTime && lastHourToBook >= booking.endDateTime) {
-                        setIsNotAvailable(true);
+                space.listingbusy.forEach((booking) => {
+                    if(dayHour >= new Date(booking.startDateTime) && lastHour <= new Date(booking.endDateTime)) {
+                        console.log("coincide con otra reserva")
+                        setIsBooked(true);
+                        console.log('isBooked',isBooked)
+                        return;
                     }
+                })
 
-                    // if(initalHourToBook <= booking.startDateTime && lastHourToBook >= booking.endDateTime) {
-                    //     console.log("coincide")
-                    //     setIsNotAvailable(true);
-                    // }
-                }) 
-                if(isNotAvailable == false) {
+                //salta antes esta comprobacion que el setIsBooked de arriba?
+                if(isBooked == false) {
                     setError(false);
-                    setIsNotAvailable(false);
+                    setIsBooked(false);
                     setIsAvailable(true);
                     setPrice(countHoursOfBooking * space.priceperhour)
                 }
@@ -148,7 +145,7 @@ export default function BasicDatePicker(props) {
                         Please select correctly the hours or more than 1 hour
                     </Typography>
                 }
-                {isNotAvailable && 
+                {isBooked && 
                     <Box style={{display: 'contents'}}>
                         <h4>The selected hours are booked right now. </h4>
                     </Box>
