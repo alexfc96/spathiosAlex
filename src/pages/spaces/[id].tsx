@@ -5,7 +5,6 @@ import BasicModal from "src/components/Modal";
 import { useRouter } from 'next/router';
 import { useEffect, useState } from "react";
 
-//tenemos que recibir el id por la url o por prop?
 export default function ViewSpathioPage() {
     const router = useRouter();
 

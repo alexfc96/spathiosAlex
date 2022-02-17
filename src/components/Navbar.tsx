@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Box, Button, AppBar, Toolbar, Typography } from '@mui/material';
+import { Button, AppBar, Toolbar } from '@mui/material';
 import{useRouter} from 'next/router';
 
 export default function Navbar() {
@@ -17,9 +17,6 @@ export default function Navbar() {
                 alt='Logo'
                 onClick={() => router.push('/')}
                 />
-                <Button color="inherit" onClick={() => router.push('/tasks/new')}>
-                    Create new spathio
-                </Button>
             </Toolbar>
         </AppBar>
     </div>

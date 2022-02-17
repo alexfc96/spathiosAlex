@@ -48,19 +48,19 @@ export default function BasicDatePicker(props) {
                 const initalHourToBook = dayHour.toISOString();
                 const lastHourToBook = lastHour.toISOString();
     
-                // console.log("intiial hour selected by the user:" , initalHourToBook);
-                // console.log("last hour selected by the user:" , lastHourToBook);
-                // console.log("Todas las reservas del espacio", space.listingbusy)
+                console.log("intiial hour selected by the user:" , initalHourToBook);
+                console.log("last hour selected by the user:" , lastHourToBook);
+                console.log("Todas las reservas del espacio", space.listingbusy)
     
-                space.listingbusy.map((listing) => {
-                    if(initalHourToBook <= listing.startDateTime && lastHourToBook >= listing.endDateTime) {
-                        console.log("Coincide?:", listing.startDateTime);
+                space.listingbusy.map((booking) => {
+                    if(initalHourToBook <= booking.startDateTime && lastHourToBook >= booking.endDateTime) {
+                        console.log("Coincide?:", booking.startDateTime);
                     }
                 })
                 //if is available:
-                setError(false);
-                setIsAvailable(true);
-                setPrice(countHoursOfBooking * space.priceperhour)
+                // setError(false);
+                // setIsAvailable(true);
+                // setPrice(countHoursOfBooking * space.priceperhour)
             } else{
                 setError(true);
             }

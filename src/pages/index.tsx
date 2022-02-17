@@ -1,5 +1,4 @@
 import {useRouter} from 'next/router';
-import { Button } from '@mui/material';
 import Layout from 'src/components/Layout';
 import { Space } from 'src/interfaces/Space';
 import SpacesList from 'src/components/spaces/SpacesList';
@@ -15,7 +14,6 @@ export default function IndexPage({spaces}: Props) {
       {spaces.length === 0 ? (
       <div>
         <h1>No spathios yet</h1>
-        {/* <Button onClick={() => router.push('/spaces/new')}>Create one spathio</Button> */}
       </div>
       ) : (
         <div>
