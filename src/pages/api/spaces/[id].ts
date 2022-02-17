@@ -21,17 +21,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             }
         case 'PUT':
             try {
-                const { listingBusy } = body;
+                const { listingBusy, totalPrice } = body;
                 
                 //tener en cuenta que he puesto las comillas a los valores manualmente
-                const newListingQuery = `UPDATE spaces SET listingBusy = listingBusy || '{"startDateTime": "${listingBusy.startDateTime}", "endDateTime": "${listingBusy.endDateTime}", "status": "${listingBusy.status}"}' ::jsonb WHERE listingID = ${query.id}`;
+                const newListingQuery = `UPDATE spaces SET listingBusy = listingBusy || '{"startDateTime": ${listingBusy.startDateTime}, "endDateTime": ${listingBusy.endDateTime}, "status": "${listingBusy.status}"}' ::jsonb WHERE listingID = ${query.id}`;
                 const result = await conn.query(newListingQuery);
 
                 if(result.rowCount !== 1) 
                     return res.status(400).json({ message: "Space not found" })
 
-                const bookingQuery = ('INSERT INTO bookings (checkin, checkout, totalPrice, listingID) VALUES ($1, $2, 120, $3) RETURNING *');
-                const values =  [listingBusy.startDateTime, listingBusy.endDateTime, query.id];
+                const bookingQuery = ('INSERT INTO bookings (checkin, checkout, totalPrice, listingID) VALUES ($1, $2, $3, $4) RETURNING *');
+                const values =  [listingBusy.startDateTime, listingBusy.endDateTime, totalPrice ,query.id];
                 const resBooking = await conn.query(bookingQuery, values);
 
                 return res.json(resBooking.rows[0]);

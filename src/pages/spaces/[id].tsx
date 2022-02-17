@@ -45,6 +45,9 @@ export default function ViewSpathioPage() {
                     <Typography variant="paragraph" component="p" marginTop={3}>
                         Our creative loft in Poblenou (Barcelona) with lots of light is ideal for sharing moments, experiences and emotions between different cultures and nationalities. They are almost 150 m² in open space with different environments that allow hosting any type of activity. These can be product presentations, pop-ups, team buildings, workshops, show-cooking, photo sessions, shootings, castings and private celebrations (consult). In our creative loft in Poblenou we are characterized by the ease of renting. Our schedule is flexible, and we can offer event management (we offer additional contracting services such as catering, furniture rental, etc.) and personalized treatment. We are in an area easily accessible by public transport.
                     </Typography>
+                    <Typography variant="h6" component="h4" marginTop={3}>
+                        Price per hour: {space.priceperhour}
+                    </Typography>
                     <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
                         <BottomNavigation>
                             <BasicModal />

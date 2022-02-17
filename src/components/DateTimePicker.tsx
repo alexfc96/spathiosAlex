@@ -8,13 +8,17 @@ import { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
 import { formatISO } from 'date-fns'
+import Box from '@mui/material/Box';
 
 export default function BasicDatePicker() {
     const router = useRouter();
 
+    const [isAvailable, setIsAvailable] = React.useState<Boolean>(false);
+    const [price, setPrice] = React.useState<number>(0);
     const [dayHour, setDayHour] = React.useState<Date | null>(null);
     const [lastHour, setLastHour] = React.useState<Date | null>(null);
     const [space, setSpace] = React.useState({
+        listingid: '',
         listingname: '',
         checkin: '',
         checkout: '',
@@ -32,71 +36,109 @@ export default function BasicDatePicker() {
     const loadSpace = async (id: string) => {
         const res = await fetch('http://localhost:3000/api/spaces/' + id);
         const space = await res.json();
-        setSpace({listingname: space.listingname, checkin: space.checkin, checkout: space.checkout, priceperhour: space.priceperhour, listingbusy: space.listingbusy});
-        // console.log("space desde el DateTimePicker", space)
+        setSpace({listingid: space.listingid ,listingname: space.listingname, checkin: space.checkin, checkout: space.checkout, priceperhour: space.priceperhour, listingbusy: space.listingbusy});
     };
 
-    const checkAvailability = async () => {
+    const checkAvailability = () => {
         if(dayHour && lastHour){
-
             const initalHourToBook = dayHour.toISOString();
             const lastHourToBook = lastHour.toISOString();
 
-            console.log("intiial hour selected by the user:" , initalHourToBook);
-            console.log("last hour selected by the user:" , lastHourToBook);
+            // console.log("intiial hour selected by the user:" , initalHourToBook);
+            // console.log("last hour selected by the user:" , lastHourToBook);
+            // console.log("Todas las reservas del espacio", space.listingbusy)
 
-            console.log("Todas las reservas del espacio", space.listingbusy)
             space.listingbusy.map((listing) => {
                 if(initalHourToBook <= listing.startDateTime && lastHourToBook >= listing.endDateTime) {
                     console.log("Coincide?:", listing.startDateTime);
                 }
             })
+
+            //if is available:
+            setIsAvailable(true);
+            setPrice((lastHour.getHours() - dayHour.getHours())*space.priceperhour)
+
+            // const newBooking = {
+            //     "listingBusy":{
+            //         "startDateTime": initalHourToBook,
+            //         "endDateTime": lastHourToBook,
+            //         "status": "booked"
+            //     }
+            // }
+
+            // makeBooking(space.listingid, newBooking )
+        }
+    }
+
+    const makeBooking = async () => {
+        const newBooking = {
+            "listingBusy":{
+                "startDateTime": dayHour.toISOString(),
+                "endDateTime": lastHour.toISOString(),
+                "status": "blocked"
+            },
+            "totalPrice": price
         }
 
-        // try {
-        //     await fetch('http://localhost:3000/api/tasks/' + id, {
-        //         method: 'DELETE',
-        //     })
-        //     router.push("/")
-        // } catch (error) {
-        //     console.log(error)
-        // }
+        try {
+            await fetch('http://localhost:3000/api/spaces/' + space.listingid, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newBooking)
+            })
+        } catch (error) {
+            console.log(error)
         }
+    }
 
     return (
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-                label="Select the day"
-                value={dayHour}
-                disablePast={true}
-                onChange={(newDay) => {
-                    setDayHour(newDay);
-                }}
-                renderInput={(params) => <TextField {...params} />}
-            /><br /><br />
-            <TimePicker
-                label="Select the inital hour"
-                value={dayHour}
-                ampm={false}
-                views={["hours"]}
-                onChange={(firstHour) => {
-                    setDayHour(firstHour);
-                }}
-                renderInput={(params) => <TextField {...params} />}
-            />
-            <TimePicker
-                label="Select the final hour"
-                value={lastHour}
-                views={["hours"]}
-                ampm={false}
-                onChange={(lastHour) => {
-                    setLastHour(lastHour);
-                }}
-                renderInput={(params) => <TextField {...params} />}
-            />
-            <Button onClick={() => checkAvailability()}>
-                Check availability
-            </Button>
-        </LocalizationProvider>
+        <Box style={{display: 'grid'}}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                    label="Select the day"
+                    value={dayHour}
+                    disablePast={true}
+                    onChange={(newDay) => {
+                        setDayHour(newDay);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                /><br /><br />
+                <TimePicker
+                    label="Select the inital hour"
+                    value={dayHour}
+                    ampm={false}
+                    views={["hours"]}
+                    onChange={(firstHour) => {
+                        setDayHour(firstHour);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                /><br />
+                <TimePicker
+                    label="Select the final hour"
+                    value={lastHour}
+                    views={["hours"]}
+                    disabled={!dayHour}
+                    ampm={false}
+                    onChange={(lastHour) => {
+                        setLastHour(lastHour);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                />
+                <Button variant="outlined" onClick={() => checkAvailability()}>
+                    Check availability
+                </Button>
+                {isAvailable && 
+                    <Box style={{display: 'contents'}}>
+                        <h2>The total price is: {price} </h2>
+                        <Button variant="contained" onClick={() => makeBooking()}>
+                            Book spathio
+                        </Button>
+                    </Box>
+                }
+            </LocalizationProvider>
+        </Box>
+
     );
 }
