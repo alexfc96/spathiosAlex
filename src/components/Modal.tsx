@@ -1,9 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import StaticDateRangePickerDemo from './DatePicker';
 import BasicDatePicker from './DateTimePicker';
 
 const style = {
@@ -32,8 +30,7 @@ export default function BasicModal() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-            {/* <StaticDateRangePickerDemo /> */}
-            <BasicDatePicker />
+            <BasicDatePicker onBooking={handleClose} />
         </Box>
       </Modal>
     </div>

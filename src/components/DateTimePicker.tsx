@@ -9,8 +9,9 @@ import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
 import { formatISO } from 'date-fns'
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
-export default function BasicDatePicker() {
+export default function BasicDatePicker(props) {
     const router = useRouter();
 
     const [isAvailable, setIsAvailable] = React.useState<Boolean>(false);
@@ -24,6 +25,7 @@ export default function BasicDatePicker() {
         checkout: '',
         priceperhour: '',
     });
+    const [error, setError] = React.useState(false);
 
     useEffect(() =>{
         if(typeof router.query.id === 'string') loadSpace(router.query.id)
@@ -41,32 +43,27 @@ export default function BasicDatePicker() {
 
     const checkAvailability = () => {
         if(dayHour && lastHour){
-            const initalHourToBook = dayHour.toISOString();
-            const lastHourToBook = lastHour.toISOString();
-
-            // console.log("intiial hour selected by the user:" , initalHourToBook);
-            // console.log("last hour selected by the user:" , lastHourToBook);
-            // console.log("Todas las reservas del espacio", space.listingbusy)
-
-            space.listingbusy.map((listing) => {
-                if(initalHourToBook <= listing.startDateTime && lastHourToBook >= listing.endDateTime) {
-                    console.log("Coincide?:", listing.startDateTime);
-                }
-            })
-
-            //if is available:
-            setIsAvailable(true);
-            setPrice((lastHour.getHours() - dayHour.getHours())*space.priceperhour)
-
-            // const newBooking = {
-            //     "listingBusy":{
-            //         "startDateTime": initalHourToBook,
-            //         "endDateTime": lastHourToBook,
-            //         "status": "booked"
-            //     }
-            // }
-
-            // makeBooking(space.listingid, newBooking )
+            const countHoursOfBooking = lastHour.getHours() - dayHour.getHours();
+            if(countHoursOfBooking > 1){
+                const initalHourToBook = dayHour.toISOString();
+                const lastHourToBook = lastHour.toISOString();
+    
+                // console.log("intiial hour selected by the user:" , initalHourToBook);
+                // console.log("last hour selected by the user:" , lastHourToBook);
+                // console.log("Todas las reservas del espacio", space.listingbusy)
+    
+                space.listingbusy.map((listing) => {
+                    if(initalHourToBook <= listing.startDateTime && lastHourToBook >= listing.endDateTime) {
+                        console.log("Coincide?:", listing.startDateTime);
+                    }
+                })
+                //if is available:
+                setError(false);
+                setIsAvailable(true);
+                setPrice(countHoursOfBooking * space.priceperhour)
+            } else{
+                setError(true);
+            }
         }
     }
 
@@ -88,6 +85,7 @@ export default function BasicDatePicker() {
                 },
                 body: JSON.stringify(newBooking)
             })
+            props.onBooking()
         } catch (error) {
             console.log(error)
         }
@@ -129,6 +127,11 @@ export default function BasicDatePicker() {
                 <Button variant="outlined" onClick={() => checkAvailability()}>
                     Check availability
                 </Button>
+                {error && 
+                    <Typography>
+                        Please select correctly the hours
+                    </Typography>
+                }
                 {isAvailable && 
                     <Box style={{display: 'contents'}}>
                         <h2>The total price is: {price} </h2>
