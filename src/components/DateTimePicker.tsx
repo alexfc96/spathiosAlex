@@ -15,6 +15,7 @@ export default function BasicDatePicker(props) {
     const router = useRouter();
 
     const [isAvailable, setIsAvailable] = React.useState<Boolean>(false);
+    const [isNotAvailable, setIsNotAvailable] = React.useState<Boolean>(false);
     const [price, setPrice] = React.useState<number>(0);
     const [dayHour, setDayHour] = React.useState<Date | null>(null);
     const [lastHour, setLastHour] = React.useState<Date | null>(null);
@@ -48,19 +49,18 @@ export default function BasicDatePicker(props) {
                 const initalHourToBook = dayHour.toISOString();
                 const lastHourToBook = lastHour.toISOString();
     
-                console.log("intiial hour selected by the user:" , initalHourToBook);
-                console.log("last hour selected by the user:" , lastHourToBook);
-                console.log("Todas las reservas del espacio", space.listingbusy)
-    
+                //some para descartar
                 space.listingbusy.map((booking) => {
                     if(initalHourToBook <= booking.startDateTime && lastHourToBook >= booking.endDateTime) {
-                        console.log("Coincide?:", booking.startDateTime);
+                        setIsNotAvailable(true);
                     }
-                })
-                //if is available:
-                // setError(false);
-                // setIsAvailable(true);
-                // setPrice(countHoursOfBooking * space.priceperhour)
+                }) 
+                if(isNotAvailable){
+                    setError(false);
+                    setIsNotAvailable(false);
+                    setIsAvailable(true);
+                    setPrice(countHoursOfBooking * space.priceperhour)
+                }
             } else{
                 setError(true);
             }
@@ -131,6 +131,11 @@ export default function BasicDatePicker(props) {
                     <Typography>
                         Please select correctly the hours
                     </Typography>
+                }
+                {isNotAvailable && 
+                    <Box style={{display: 'contents'}}>
+                        <h4>The selected hours are booked right now. </h4>
+                    </Box>
                 }
                 {isAvailable && 
                     <Box style={{display: 'contents'}}>
