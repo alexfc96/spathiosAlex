@@ -19,6 +19,11 @@ export default function BasicModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [successModal, setSuccessModal] = React.useState(false);
+
+  const onSuccessModal = () => {
+    setSuccessModal(true);
+  }
 
   return (
     <div>
@@ -30,9 +35,17 @@ export default function BasicModal() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-            <BasicDatePicker onBooking={handleClose} />
+            <BasicDatePicker onBooking={handleClose} onSuccessBooking={onSuccessModal} />
         </Box>
       </Modal>
+      {/* {successModal && 
+        <Modal
+          open={open}
+          onClose={handleClose}>
+            Booked successfully.
+        </Modal>
+      } */}
     </div>
   );
 }
+

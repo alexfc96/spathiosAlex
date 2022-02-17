@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS spaces(
 INSERT INTO spaces (listingName, pricePerHour, listingBusy) VALUES('Espacio 1', 50, '[{"startDateTime": "2022-02-15T08:00:00", "endDateTime": "2022-02-15T10:30:00", "status": "booked"}]');
 INSERT INTO spaces (listingName, pricePerHour, listingBusy) VALUES('Espacio 2', 125, '[{"startDateTime": "2022-02-18T11:00:00", "endDateTime": "2022-02-18T12:00:00", "status": "blocked"}]');
 INSERT INTO spaces (listingName, pricePerHour, listingBusy) VALUES('Espacio 3', 60, '[{"startDateTime": "2022-02-20T11:00:00", "endDateTime": "2022-02-20T12:00:00", "status": "booked"}]');
+INSERT INTO spaces (listingName, pricePerHour, listingBusy) VALUES('Espacio 4', 80, '[{"startDateTime": "2022-02-20T11:00:00", "endDateTime": "2022-02-20T12:00:00", "status": "booked"}]');
 --Probando de insertar una fecha q no sea string pero veo que no es posible ya que solo trata text
 
 UPDATE spaces SET listingBusy = listingBusy || '{"startDateTime": "2022-02-10T08:00:00", "endDateTime": "2022-02-10T11:00:00", "status": "blocked"}' ::jsonb WHERE listingID = 3;
@@ -26,7 +27,3 @@ CREATE TABLE IF NOT EXISTS bookings(
 );
 
 INSERT INTO bookings (checkin, checkout, totalPrice, listingID) VALUES ('2022-02-15T08:00:00', '2022-02-15T10:30:00', 120, 1);
-
--- id de reserva, fecha de check in,
--- fecha de check out, precio total de la reserva, y 
--- la nueva ocupación del listing ?? Esto como lo rellenamos? Con el listingID?

@@ -23,7 +23,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             try {
                 const { listingBusy, totalPrice } = body;
                 
-                //tener en cuenta que he puesto las comillas a los valores manualmente
                 const newListingQuery = `UPDATE spaces SET listingBusy = listingBusy || '{"startDateTime": "${listingBusy.startDateTime}", "endDateTime": "${listingBusy.endDateTime}", "status": "${listingBusy.status}"}' ::jsonb WHERE listingID = ${query.id}`;
                 const result = await conn.query(newListingQuery);
 

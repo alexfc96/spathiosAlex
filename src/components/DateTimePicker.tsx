@@ -7,7 +7,6 @@ import TimePicker from '@mui/lab/TimePicker';
 import { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
-import { formatISO } from 'date-fns'
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
@@ -36,6 +35,17 @@ export default function BasicDatePicker(props) {
         setLastHour(dayHour)
     }, [dayHour])
 
+    const removeMinutesFromInitialHour = (date) => {
+        date.setMinutes(0);
+        date.setSeconds(0);
+        setDayHour(date);
+    }
+    const removeMinutesFromLastHour = (date) => {
+        date.setMinutes(0);
+        date.setSeconds(0);
+        setLastHour(date)
+    }
+
     const loadSpace = async (id: string) => {
         const res = await fetch('http://localhost:3000/api/spaces/' + id);
         const space = await res.json();
@@ -48,14 +58,18 @@ export default function BasicDatePicker(props) {
             if(countHoursOfBooking > 1){
                 const initalHourToBook = dayHour.toISOString();
                 const lastHourToBook = lastHour.toISOString();
-    
-                //some para descartar
+
                 space.listingbusy.map((booking) => {
-                    if(initalHourToBook <= booking.startDateTime && lastHourToBook >= booking.endDateTime) {
+                    if(initalHourToBook <= booking.startDateTime && initalHourToBook >= booking.endDateTime || lastHourToBook <= booking.startDateTime && lastHourToBook >= booking.endDateTime) {
                         setIsNotAvailable(true);
                     }
+
+                    // if(initalHourToBook <= booking.startDateTime && lastHourToBook >= booking.endDateTime) {
+                    //     console.log("coincide")
+                    //     setIsNotAvailable(true);
+                    // }
                 }) 
-                if(isNotAvailable){
+                if(isNotAvailable == false) {
                     setError(false);
                     setIsNotAvailable(false);
                     setIsAvailable(true);
@@ -72,7 +86,7 @@ export default function BasicDatePicker(props) {
             "listingBusy":{
                 "startDateTime": dayHour.toISOString(),
                 "endDateTime": lastHour.toISOString(),
-                "status": "blocked"
+                "status": "booked"
             },
             "totalPrice": price
         }
@@ -86,6 +100,7 @@ export default function BasicDatePicker(props) {
                 body: JSON.stringify(newBooking)
             })
             props.onBooking()
+            props.onSuccessBooking()
         } catch (error) {
             console.log(error)
         }
@@ -109,7 +124,7 @@ export default function BasicDatePicker(props) {
                     ampm={false}
                     views={["hours"]}
                     onChange={(firstHour) => {
-                        setDayHour(firstHour);
+                        removeMinutesFromInitialHour(firstHour);
                     }}
                     renderInput={(params) => <TextField {...params} />}
                 /><br />
@@ -119,8 +134,9 @@ export default function BasicDatePicker(props) {
                     views={["hours"]}
                     disabled={!dayHour}
                     ampm={false}
+                    minTime={dayHour}
                     onChange={(lastHour) => {
-                        setLastHour(lastHour);
+                        removeMinutesFromLastHour(lastHour)
                     }}
                     renderInput={(params) => <TextField {...params} />}
                 />
@@ -129,7 +145,7 @@ export default function BasicDatePicker(props) {
                 </Button>
                 {error && 
                     <Typography>
-                        Please select correctly the hours
+                        Please select correctly the hours or more than 1 hour
                     </Typography>
                 }
                 {isNotAvailable && 
@@ -139,7 +155,7 @@ export default function BasicDatePicker(props) {
                 }
                 {isAvailable && 
                     <Box style={{display: 'contents'}}>
-                        <h2>The total price is: {price} </h2>
+                        <h2>The total price is: {price}€</h2>
                         <Button variant="contained" onClick={() => makeBooking()}>
                             Book spathio
                         </Button>
